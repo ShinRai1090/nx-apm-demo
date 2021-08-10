@@ -21,7 +21,10 @@
               "apps/apm-demo/src/favicon.ico",
               "apps/apm-demo/src/assets"
             ],
-            "styles": ["apps/apm-demo/src/styles.scss"],
+            "styles": [
+              "apps/apm-demo/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css"
+            ],
             "scripts": []
           },
           "configurations": {
