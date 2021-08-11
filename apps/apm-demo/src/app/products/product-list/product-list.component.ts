@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { Subscription } from 'rxjs';
+import { getShowProductCode } from '../+state/product.reducer';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
@@ -39,13 +40,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
     });
 
     // TODO: Unsubscribe
-    this.store.select('products')
+    this.store.select(getShowProductCode)
     .subscribe(
-      products => {
-        if (products) {
-          this.displayCode = products.showProductCode;
-        }
-      }
+      showProductCode => this.displayCode = showProductCode
     );
   }
 
