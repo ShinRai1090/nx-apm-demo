@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { Subscription } from 'rxjs';
-import { getShowProductCode } from '../+state/product.selector';
+import { getShowProductCode } from '../+state/product.selectors';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
