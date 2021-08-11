@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { getMaskUserName } from './+state/user.reducer';
+import { getMaskUserName } from './+state/user.selector';
 
 import { AuthService } from './auth.service';
 
