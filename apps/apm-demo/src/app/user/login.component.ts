@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
+import { getMaskUserName } from './+state/user.reducer';
 
 import { AuthService } from './auth.service';
 
@@ -21,13 +22,9 @@ export class LoginComponent {
     private authService: AuthService
   ) {
     // TODO: Unsubscribe
-    this.store.select('users')
+    this.store.select(getMaskUserName)
     .subscribe(
-      users => {
-        if (users) {
-          this.maskUserName = users.maskUserName;
-        }
-      }
+      maskUserName => this.maskUserName = maskUserName
     );
   }
 
