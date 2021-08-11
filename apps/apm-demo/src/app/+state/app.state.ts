@@ -1,7 +1,5 @@
-import { ProductState } from "../products/+state/product.reducer";
 import { UserState } from "../user/+state/user.reducer";
 
-export interface AppState {
-  products: ProductState;
+export interface State {
   user: UserState;
 }

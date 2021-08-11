@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
+import { State } from '../+state/product.reducer';
 import { getCurrentProduct, getShowProductCode } from '../+state/product.selectors';
 import * as ProductActions from './../+state/product.actions';
 
@@ -24,7 +25,7 @@ export class ProductListComponent implements OnInit {
   selectedProduct: Product | null;
 
   constructor(
-    private store: Store<any>,
+    private store: Store<State>,
     private productService: ProductService
   ) { }
 

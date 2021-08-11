@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
 
+import { State } from '../+state/product.reducer';
 import { getCurrentProduct } from '../+state/product.selectors';
 
 import { Product } from '../product';
@@ -30,7 +31,7 @@ export class ProductEditComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private store: Store<any>,
+    private store: Store<State>,
     private productService: ProductService
   ) {
 
