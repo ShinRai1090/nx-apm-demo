@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 
 import { Subscription } from 'rxjs';
 import { getShowProductCode } from '../+state/product.selectors';
+import * as ProductActions from './../+state/product.actions';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
@@ -52,9 +53,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   checkChanged(): void {
     // this.displayCode = !this.displayCode;
-    this.store.dispatch({
-      type: '[Product] Toggle Product Code'
-    });
+    this.store.dispatch(ProductActions.toggleProductCode());
   }
 
   newProduct(): void {
