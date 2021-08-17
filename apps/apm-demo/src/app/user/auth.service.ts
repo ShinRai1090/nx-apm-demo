@@ -1,4 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { State } from '../+state/app.state';
+
+import * as UserActions from './+state/user.actions'
+import { getCurrentUser } from './+state/user.selectors';
 
 import { User } from './user';
 
@@ -6,27 +11,35 @@ import { User } from './user';
     providedIn: 'root',
 })
 export class AuthService {
-    currentUser: User | null;
-    redirectUrl: string;
 
-    constructor() { }
+    constructor(
+      private store: Store<State>
+    ) { }
 
-    isLoggedIn(): boolean {
-        return !!this.currentUser;
+    get currentUser$() {
+      return this.store.select(getCurrentUser);
     }
 
     login(userName: string, password: string): void {
         // Code here would log into a back end service
         // and return user information
         // This is just hard-coded here.
-        this.currentUser = {
+        /* this.currentUser = {
             id: 2,
             userName,
             isAdmin: false
+        }; */
+
+        const currentUser: User = {
+          id: 2,
+          userName,
+          isAdmin: false
         };
+
+        this.store.dispatch(UserActions.setCurrentUser({ user: currentUser }));
     }
 
     logout(): void {
-        this.currentUser = null;
+        this.store.dispatch(UserActions.setCurrentUser({ user: null }));
     }
 }

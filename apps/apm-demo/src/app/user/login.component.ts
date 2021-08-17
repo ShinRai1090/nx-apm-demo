@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
+import { State } from '../+state/app.state';
 import { getMaskUserName } from './+state/user.selectors';
 
 import { AuthService } from './auth.service';
@@ -18,7 +19,7 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private store: Store<any>,
+    private store: Store<State>,
     private authService: AuthService
   ) {
     // TODO: Unsubscribe
@@ -45,11 +46,7 @@ export class LoginComponent {
       const password = loginForm.form.value.password;
       this.authService.login(userName, password);
 
-      if (this.authService.redirectUrl) {
-        this.router.navigateByUrl(this.authService.redirectUrl);
-      } else {
-        this.router.navigate(['/products']);
-      }
+      this.router.navigate(['/products']);
     }
   }
 }
