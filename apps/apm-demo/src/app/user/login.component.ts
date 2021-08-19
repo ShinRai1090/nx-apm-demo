@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { State } from '../+state/app.state';
 import { getMaskUserName } from './+state/user.selectors';
 
@@ -15,18 +16,14 @@ import { AuthService } from './auth.service';
 export class LoginComponent {
   pageTitle = 'Log In';
 
-  maskUserName: boolean;
+  maskUserName$: Observable<boolean>;
 
   constructor(
     private router: Router,
     private store: Store<State>,
     private authService: AuthService
   ) {
-    // TODO: Unsubscribe
-    this.store.select(getMaskUserName)
-    .subscribe(
-      maskUserName => this.maskUserName = maskUserName
-    );
+    this.maskUserName$ = this.store.select(getMaskUserName);
   }
 
   cancel(): void {
