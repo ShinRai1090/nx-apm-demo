@@ -7,8 +7,6 @@ import { State } from '../+state/product.reducer';
 import { getCurrentProduct, getError, getProducts, getShowProductCode } from '../+state/product.selectors';
 import * as ProductActions from './../+state/product.actions';
 
-import { ProductService } from '../product.service';
-
 import { Product } from '../product';
 
 @Component({
