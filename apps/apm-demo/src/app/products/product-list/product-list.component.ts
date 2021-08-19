@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
+import { Observable } from 'rxjs';
+
 import { State } from '../+state/product.reducer';
-import { getCurrentProduct, getShowProductCode } from '../+state/product.selectors';
+import { getCurrentProduct, getError, getProducts, getShowProductCode } from '../+state/product.selectors';
 import * as ProductActions from './../+state/product.actions';
 
-import { Product } from '../product';
 import { ProductService } from '../product.service';
+
+import { Product } from '../product';
 
 @Component({
   selector: 'pm-product-list',
@@ -15,41 +18,27 @@ import { ProductService } from '../product.service';
 })
 export class ProductListComponent implements OnInit {
   pageTitle = 'Products';
-  errorMessage: string;
 
-  displayCode: boolean;
-
-  products: Product[];
-
+  products$: Observable<Product[]>;
   // Used to highlight the selected product in the list
-  selectedProduct: Product | null;
+  selectedProduct$: Observable<Product>;
+  displayCode$: Observable<boolean>;
+  errorMessage$: Observable<string>;
 
   constructor(
-    private store: Store<State>,
-    private productService: ProductService
+    private store: Store<State>
   ) { }
 
   ngOnInit(): void {
-    /* this.sub = this.productService.selectedProductChanges$.subscribe(
-      currentProduct => this.selectedProduct = currentProduct
-    ); */
+    this.products$ = this.store.select(getProducts);
 
-    // TODO: Unsubscribe
-    this.store.select(getCurrentProduct)
-    .subscribe(
-      currentProduct => this.selectedProduct = currentProduct
-    );
+    this.errorMessage$ = this.store.select(getError);
 
-    this.productService.getProducts().subscribe({
-      next: (products: Product[]) => this.products = products,
-      error: err => this.errorMessage = err
-    });
+    this.store.dispatch(ProductActions.loadProducts());
 
-    // TODO: Unsubscribe
-    this.store.select(getShowProductCode)
-    .subscribe(
-      showProductCode => this.displayCode = showProductCode
-    );
+    this.selectedProduct$ = this.store.select(getCurrentProduct);
+
+    this.displayCode$ = this.store.select(getShowProductCode);
   }
 
   checkChanged(): void {
