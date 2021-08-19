@@ -27,11 +27,11 @@ export class ProductEffects {
               products => ProductActions.loadProductsSuccess({ products })
             ),
             catchError(
-              error => of(ProductActions.loadProductsFailure({error}))
+              error => of(ProductActions.loadProductsFailure({ error }))
             )
           )
         )
       )
     }
-  )
+  );
 }
