@@ -8,6 +8,7 @@ import { tap } from 'rxjs/operators';
 
 import { State } from '../+state/product.reducer';
 import { getCurrentProduct } from '../+state/product.selectors';
+import * as ProductActions from './../+state/product.actions';
 
 import { Product } from '../product';
 
@@ -68,10 +69,6 @@ export class ProductEditComponent implements OnInit {
     });
 
     // Watch for changes to the currently selected product
-    /* this.sub = this.productService.selectedProductChanges$.subscribe(
-      currentProduct => this.displayProduct(currentProduct)
-    ); */
-
     this.product$ = this.store.select(getCurrentProduct)
     .pipe(
       tap(currentProduct => this.displayProduct(currentProduct)
@@ -120,14 +117,15 @@ export class ProductEditComponent implements OnInit {
   deleteProduct(product: Product): void {
     if (product && product.id) {
       if (confirm(`Really delete the product: ${product.productName}?`)) {
-        this.productService.deleteProduct(product.id).subscribe({
-          next: () => this.productService.changeSelectedProduct(null),
+        this.store.dispatch(ProductActions.deleteProduct({ currentProductId: product.id }));
+        /* this.productService.deleteProduct(product.id).subscribe({
+          next: () => this.store.dispatch(ProductActions.clearCurrentProduct()),
           error: err => this.errorMessage = err
-        });
+        }); */
       }
     } else {
       // No need to delete, it was never saved
-      this.productService.changeSelectedProduct(null);
+      this.store.dispatch(ProductActions.clearCurrentProduct());
     }
   }
 
@@ -140,15 +138,17 @@ export class ProductEditComponent implements OnInit {
         const product = { ...originalProduct, ...this.productForm.value };
 
         if (product.id === 0) {
-          this.productService.createProduct(product).subscribe({
-            next: p => this.productService.changeSelectedProduct(p),
+          /* this.productService.createProduct(product).subscribe({
+            next: p => this.store.dispatch(ProductActions.setCurrentProduct({ currentProductId: p.id })),
             error: err => this.errorMessage = err
-          });
+          }); */
+          this.store.dispatch(ProductActions.createProduct({ product }));
         } else {
-          this.productService.updateProduct(product).subscribe({
-            next: p => this.productService.changeSelectedProduct(p),
+          /* this.productService.updateProduct(product).subscribe({
+            next: p => this.store.dispatch(ProductActions.setCurrentProduct({ currentProductId: p.id })),
             error: err => this.errorMessage = err
-          });
+          }); */
+          this.store.dispatch(ProductActions.updateProduct({ product }));
         }
       }
     }

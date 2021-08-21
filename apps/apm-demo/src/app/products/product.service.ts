@@ -12,14 +12,7 @@ import { Product } from './product';
 export class ProductService {
   private productsUrl = 'api/products';
 
-  private selectedProductSource = new BehaviorSubject<Product | null>(null);
-  selectedProductChanges$ = this.selectedProductSource.asObservable();
-
   constructor(private http: HttpClient) { }
-
-  changeSelectedProduct(selectedProduct: Product | null): void {
-    this.selectedProductSource.next(selectedProduct);
-  }
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.productsUrl)
@@ -27,17 +20,6 @@ export class ProductService {
         tap(data => console.log(JSON.stringify(data))),
         catchError(this.handleError)
       );
-  }
-
-  // Return an initialized product
-  newProduct(): Product {
-    return {
-      id: 0,
-      productName: '',
-      productCode: 'New',
-      description: '',
-      starRating: 0
-    };
   }
 
   createProduct(product: Product): Observable<Product> {
