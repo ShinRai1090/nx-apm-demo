@@ -19,11 +19,13 @@ export class ProductEditComponent implements OnInit, OnChanges {
   displayMessage: { [key: string]: string } = {};
   private validationMessages: { [key: string]: { [key: string]: string } };
   private genericValidator: GenericValidator;
-  @Input() product: Product;
+  @Input() selectedProduct: Product;
   @Input() errorMessage: string;
 
-  @Output() saveCurrentProduct = new EventEmitter<Product>();
-  @Output() deleteCurrentProduct = new EventEmitter<Product>();
+  @Output() create = new EventEmitter<Product>();
+  @Output() update = new EventEmitter<Product>();
+  @Output() delete = new EventEmitter<Product>();
+  @Output() clear = new EventEmitter<void>();
 
   constructor(
     private fb: FormBuilder
@@ -66,8 +68,9 @@ export class ProductEditComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.product) {
-      this.displayProduct(changes.product.currentValue);
+    if (changes.selectedProduct) {
+      const product = changes.selectedProduct.currentValue as Product;
+      this.displayProduct(product);
     }
   }
 
@@ -106,7 +109,14 @@ export class ProductEditComponent implements OnInit, OnChanges {
   }
 
   deleteProduct(product: Product): void {
-    this.deleteCurrentProduct.emit(product);
+    if (product && product.id) {
+      if (confirm(`Really delete the product: ${product.productName}?`)) {
+        this.delete.emit(product);
+      }
+    } else {
+      // No need to delete, it was never saved
+      this.clear.emit();
+    }
   }
 
   saveProduct(originalProduct: Product): void {
@@ -117,7 +127,20 @@ export class ProductEditComponent implements OnInit, OnChanges {
         // This ensures values not on the form, such as the Id, are retained
         const product = { ...originalProduct, ...this.productForm.value };
 
-        this.saveCurrentProduct.emit(product);
+        if (product.id === 0) {
+          /* this.productService.createProduct(product).subscribe({
+            next: p => this.store.dispatch(ProductPageActions.setCurrentProduct({ currentProductId: p.id })),
+            error: err => this.errorMessage = err
+          }); */
+          this.create.emit(product);
+
+        } else {
+          /* this.productService.updateProduct(product).subscribe({
+            next: p => this.store.dispatch(ProductPageActions.setCurrentProduct({ currentProductId: p.id })),
+            error: err => this.errorMessage = err
+          }); */
+          this.update.emit(product);
+        }
       }
     }
   }
