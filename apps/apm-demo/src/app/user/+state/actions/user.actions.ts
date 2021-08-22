@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { User } from "../user";
+import { User } from "../../user";
 
 export const maskUserName = createAction(
   '[Login] Mask User Name'

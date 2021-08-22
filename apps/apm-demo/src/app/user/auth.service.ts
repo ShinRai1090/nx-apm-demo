@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '../+state/app.state';
+import { UserPageActions } from './+state/actions';
 
-import * as UserActions from './+state/user.actions'
 import { getCurrentUser } from './+state/user.selectors';
 
 import { User } from './user';
@@ -36,10 +36,10 @@ export class AuthService {
           isAdmin: false
         };
 
-        this.store.dispatch(UserActions.setCurrentUser({ user: currentUser }));
+        this.store.dispatch(UserPageActions.setCurrentUser({ user: currentUser }));
     }
 
     logout(): void {
-        this.store.dispatch(UserActions.setCurrentUser({ user: null }));
+        this.store.dispatch(UserPageActions.setCurrentUser({ user: null }));
     }
 }

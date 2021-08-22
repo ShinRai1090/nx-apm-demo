@@ -1,5 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
-import * as UserActions from './../+state/user.actions';
+
+import { UserPageActions } from "./actions";
 
 import { User } from "../user";
 
@@ -15,14 +16,14 @@ const initialState: UserState = {
 
 export const userReducer = createReducer(
   initialState,
-  on(UserActions.maskUserName, (state): UserState => {
+  on(UserPageActions.maskUserName, (state): UserState => {
       return {
         ...state,
         maskUserName: !state.maskUserName
       };
     }
   ),
-  on(UserActions.setCurrentUser, (state, action): UserState => {
+  on(UserPageActions.setCurrentUser, (state, action): UserState => {
     return {
       ...state,
       currentUser: action.user
