@@ -6,9 +6,9 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { State } from '../+state/product.reducer';
+import { State } from '../+state';
+import { ProductPageActions } from '../+state/actions';
 import { getCurrentProduct } from '../+state/product.selectors';
-import * as ProductActions from './../+state/product.actions';
 
 import { Product } from '../product';
 
@@ -117,15 +117,15 @@ export class ProductEditComponent implements OnInit {
   deleteProduct(product: Product): void {
     if (product && product.id) {
       if (confirm(`Really delete the product: ${product.productName}?`)) {
-        this.store.dispatch(ProductActions.deleteProduct({ currentProductId: product.id }));
+        this.store.dispatch(ProductPageActions.deleteProduct({ currentProductId: product.id }));
         /* this.productService.deleteProduct(product.id).subscribe({
-          next: () => this.store.dispatch(ProductActions.clearCurrentProduct()),
+          next: () => this.store.dispatch(ProductPageActions.clearCurrentProduct()),
           error: err => this.errorMessage = err
         }); */
       }
     } else {
       // No need to delete, it was never saved
-      this.store.dispatch(ProductActions.clearCurrentProduct());
+      this.store.dispatch(ProductPageActions.clearCurrentProduct());
     }
   }
 
@@ -139,16 +139,16 @@ export class ProductEditComponent implements OnInit {
 
         if (product.id === 0) {
           /* this.productService.createProduct(product).subscribe({
-            next: p => this.store.dispatch(ProductActions.setCurrentProduct({ currentProductId: p.id })),
+            next: p => this.store.dispatch(ProductPageActions.setCurrentProduct({ currentProductId: p.id })),
             error: err => this.errorMessage = err
           }); */
-          this.store.dispatch(ProductActions.createProduct({ product }));
+          this.store.dispatch(ProductPageActions.createProduct({ product }));
         } else {
           /* this.productService.updateProduct(product).subscribe({
-            next: p => this.store.dispatch(ProductActions.setCurrentProduct({ currentProductId: p.id })),
+            next: p => this.store.dispatch(ProductPageActions.setCurrentProduct({ currentProductId: p.id })),
             error: err => this.errorMessage = err
           }); */
-          this.store.dispatch(ProductActions.updateProduct({ product }));
+          this.store.dispatch(ProductPageActions.updateProduct({ product }));
         }
       }
     }

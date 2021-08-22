@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
 
-import { State } from '../+state/product.reducer';
+import { State } from '../+state';
+import { ProductPageActions } from '../+state/actions';
 import { getCurrentProduct, getError, getProducts, getShowProductCode } from '../+state/product.selectors';
-import * as ProductActions from './../+state/product.actions';
 
 import { Product } from '../product';
 @Component({
@@ -22,7 +22,7 @@ export class ProductShellComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.store.dispatch(ProductActions.loadProducts());
+    this.store.dispatch(ProductPageActions.loadProducts());
     this.products$ = this.store.select(getProducts);
     this.errorMessage$ = this.store.select(getError);
     this.selectedProduct$ = this.store.select(getCurrentProduct);
@@ -31,16 +31,16 @@ export class ProductShellComponent implements OnInit {
 
   checkChanged(): void {
     // this.displayCode = !this.displayCode;
-    this.store.dispatch(ProductActions.toggleProductCode());
+    this.store.dispatch(ProductPageActions.toggleProductCode());
   }
 
   newProduct(): void {
     // this.productService.changeSelectedProduct(this.productService.newProduct());
-    this.store.dispatch(ProductActions.initializeCurrentProduct());
+    this.store.dispatch(ProductPageActions.initializeCurrentProduct());
   }
 
   productSelected(product: Product): void {
     // this.productService.changeSelectedProduct(product);
-    this.store.dispatch(ProductActions.setCurrentProduct({ currentProductId: product.id }));
+    this.store.dispatch(ProductPageActions.setCurrentProduct({ currentProductId: product.id }));
   }
 }
